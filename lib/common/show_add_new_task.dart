@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_firestore/common/commons.dart';
 import 'package:todo_firestore/constants/constants.dart';
 import 'package:todo_firestore/features/list_task/widgets/widgets.dart';
+import 'package:todo_firestore/provider/radio_provider.dart';
 
-class AddNewTask extends StatelessWidget {
+class AddNewTask extends ConsumerWidget {
   const AddNewTask({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
 
     return Container(
@@ -62,22 +64,31 @@ class AddNewTask extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Expanded(
+              Expanded(
                 child: RadioWidget(
                   titleRadio: 'LRN',
                   categoryColor: Colors.green,
+                  valueInput: 1,
+                  onChangeValue: () =>
+                      ref.read(radioProvider.notifier).update((state) => 1),
                 ),
               ),
               Expanded(
                 child: RadioWidget(
                   titleRadio: 'WORK',
                   categoryColor: Colors.blue.shade700,
+                  valueInput: 2,
+                  onChangeValue: () =>
+                      ref.read(radioProvider.notifier).update((state) => 2),
                 ),
               ),
               Expanded(
                 child: RadioWidget(
                   titleRadio: 'GEN',
                   categoryColor: Colors.amberAccent.shade700,
+                  valueInput: 3,
+                  onChangeValue: () =>
+                      ref.read(radioProvider.notifier).update((state) => 3),
                 ),
               ),
             ],
