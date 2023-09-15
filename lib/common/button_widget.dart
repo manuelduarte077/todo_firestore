@@ -6,17 +6,19 @@ class ButtonWidget extends StatelessWidget {
     required this.title,
     required this.bgColor,
     required this.fgColor,
+    required this.onTap,
   });
 
   final String title;
   final Color bgColor;
   final Color fgColor;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
           foregroundColor: fgColor,

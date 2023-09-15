@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_firestore/common/commons.dart';
 import 'package:todo_firestore/constants/constants.dart';
 import 'package:todo_firestore/features/list_task/widgets/widgets.dart';
+import 'package:todo_firestore/provider/date_time_provider.dart';
 import 'package:todo_firestore/provider/radio_provider.dart';
 
 class AddNewTask extends ConsumerWidget {
@@ -12,6 +14,8 @@ class AddNewTask extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
+
+    final dateProv = ref.watch(dateProvider);
 
     return Container(
       height: size.height * 0.70,
@@ -96,20 +100,47 @@ class AddNewTask extends ConsumerWidget {
 
           /// Date and Time
           const SizedBox(height: 20),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               DateTimeWidget(
                 title: 'Date',
                 icon: CupertinoIcons.calendar,
-                valueText: '12/12/2021',
+                valueText: dateProv,
+                onTap: () async {
+                  final getValue = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2022),
+                    lastDate: DateTime(2025),
+                  );
+
+                  if (getValue != null) {
+                    final format = DateFormat.yMd();
+
+                    ref
+                        .read(dateProvider.notifier)
+                        .update((state) => format.format(getValue));
+                  }
+                },
               ),
-              SizedBox(width: 22),
+              const SizedBox(width: 22),
               DateTimeWidget(
-                title: 'Time',
-                icon: CupertinoIcons.time,
-                valueText: '12:00 PM',
-              )
+                  title: 'Time',
+                  icon: CupertinoIcons.time,
+                  valueText: ref.watch(timeProvider),
+                  onTap: () async {
+                    final getTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+
+                    if (getTime != null) {
+                      ref
+                          .read(timeProvider.notifier)
+                          .update((state) => getTime.format(context));
+                    }
+                  })
             ],
           ),
 
@@ -121,12 +152,14 @@ class AddNewTask extends ConsumerWidget {
                 bgColor: Colors.white,
                 fgColor: Colors.blue.shade800,
                 title: 'Cancel',
+                onTap: () => Navigator.pop(context),
               ),
               const SizedBox(width: 20),
               ButtonWidget(
                 bgColor: Colors.blue.shade800,
                 fgColor: Colors.white,
                 title: 'Create',
+                onTap: () {},
               ),
             ],
           ),
