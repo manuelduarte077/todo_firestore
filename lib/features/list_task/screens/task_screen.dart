@@ -22,14 +22,26 @@ class ListTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
-            SizedBox(height: 20),
-            HeaderListTask(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            const HeaderListTask(),
+
+            // Card List Task
+            const SizedBox(height: 20),
+            ListView.builder(
+              itemCount: 4,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CardTodoListWidget(),
+                );
+              },
+            )
           ],
         ),
       ),
