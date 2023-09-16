@@ -93,7 +93,10 @@ class HeaderListTask extends StatelessWidget {
           ),
           child: const Text(
             '+ New Task',
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ],
